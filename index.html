@@ -119,10 +119,10 @@
   .turn-shade{position:absolute;inset:0;z-index:7;pointer-events:none;opacity:0;background:linear-gradient(100deg,rgba(74,55,18,0) 25%,rgba(74,55,18,.22) 50%,rgba(255,255,255,.16) 63%,rgba(74,55,18,0) 88%);animation:turnShade .65s ease-in-out both}
   @keyframes turnShade{0%{opacity:0}30%{opacity:.6}65%{opacity:.38}100%{opacity:0}}
   .face::before{content:"";position:absolute;inset:0;pointer-events:none;background-image:radial-gradient(rgba(95,138,102,.05) 1px, transparent 1px);background-size:20px 20px}
-  .page-inner{position:relative;flex:1;min-height:0;overflow-y:auto;overflow-x:hidden;padding:22px 26px 46px;text-align:left;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:#c9bd97 transparent}
-  .page-inner::-webkit-scrollbar,.cover-inner::-webkit-scrollbar,.backcover-inner::-webkit-scrollbar{width:5px}
-  .page-inner::-webkit-scrollbar-thumb,.cover-inner::-webkit-scrollbar-thumb,.backcover-inner::-webkit-scrollbar-thumb{background:#c9bd97;border-radius:99px}
-  .page-inner::-webkit-scrollbar-track,.cover-inner::-webkit-scrollbar-track,.backcover-inner::-webkit-scrollbar-track{background:transparent}
+  /* no scrolling inside the book: every page shows its full content, and
+     the book grows to fit the tallest page (JS measures it) — any scrolling
+     the reader does is the ordinary layout scroll of the whole page */
+  .page-inner{position:relative;flex:1;min-height:0;overflow:visible;padding:22px 26px 46px;text-align:left}
   .page-inner::after{content:"";display:block;height:10px;flex:none}
   .page-num{position:absolute;bottom:8px;font-family:"Caveat",cursive;font-size:17px;line-height:1.25;color:#7d8b74;z-index:6;background:var(--page);padding:2px 9px;border-radius:999px;box-shadow:0 0 0 4px var(--page);pointer-events:none}
   .face.cover .page-num,.face.backcover .page-num{background:rgba(20,32,22,.45);box-shadow:0 0 0 4px rgba(20,32,22,.45);color:#e8dfc2}
@@ -136,7 +136,7 @@
   /* cover face */
   .face.cover{background:linear-gradient(160deg,var(--cover) 0%,var(--cover-2) 100%);color:#f5efdb}
   .face.cover::before{background-image:radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px)}
-  .cover-inner{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:26px 26px 48px;position:relative;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:rgba(238,201,95,.6) transparent}
+  .cover-inner{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;text-align:center;padding:26px 26px 48px;position:relative;overflow:visible}
   .cover-frame{position:absolute;inset:12px;border:1.5px solid rgba(233,185,73,.5);border-radius:6px 12px 12px 6px;pointer-events:none}
   .cover-kicker{font-family:"Caveat",cursive;font-size:21px;color:#eec95f;font-weight:700;margin-top:6px}
   .cover-title{font-family:"Cormorant Garamond",serif;font-size:clamp(40px,4.6vw,58px);line-height:.95;margin:6px 0 2px;font-weight:700;letter-spacing:.01em}
@@ -191,7 +191,7 @@
   .end-wrap{text-align:center;padding-top:16px}
   .end-wrap .the-end{font-family:"Caveat",cursive;font-size:38px;color:#3e6b4a;margin:14px 0 6px}
   .end-credit{font-size:13px;color:#7c8a78;line-height:1.7}
-  .backcover-inner{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 30px 48px;position:relative;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;touch-action:pan-y;scrollbar-width:thin;scrollbar-color:rgba(238,201,95,.6) transparent}
+  .backcover-inner{flex:1;min-height:0;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:30px 30px 48px;position:relative;overflow:visible}
   .backcover{background:linear-gradient(200deg,var(--cover) 0%,var(--cover-2) 100%);color:#f5efdb}
   .backcover::before{background-image:radial-gradient(rgba(255,255,255,.06) 1px, transparent 1px)}
   .backcover .cover-frame{border-radius:12px 6px 6px 12px}
@@ -337,7 +337,7 @@
       <div class="board left" aria-hidden="true"><span class="board-txt">The Wild Robot<br>✿</span></div>
       <div class="board right" aria-hidden="true"><span class="board-txt">The Wild Robot<br>✿</span></div>
 
-      <!-- LEAF 1 : cover / contents -->
+      <!-- LEAF 1 : cover / chapter 1 -->
       <div class="leaf">
         <div class="face front cover">
           <div class="cover-inner">
@@ -362,34 +362,19 @@
         </div>
         <div class="face back">
           <div class="page-inner">
-            <span class="kicker">✿ Inside this book</span>
-            <h2>Contents</h2>
-            <p>Five short chapters about a robot who learns how to be a mother. Use the chapter menu above — or just keep turning the pages.</p>
-            <div class="toc-list">
-              <button type="button" class="toc-item" data-goto="1"><span class="num">01</span><span><span class="t">More Than Just a Family</span><span class="d">What family really means</span></span><span class="pg">p. 3</span></button>
-              <button type="button" class="toc-item" data-goto="2"><span class="num">02</span><span><span class="t">From a Robot to a Mother</span><span class="d">Shipwreck, an egg, a gosling</span></span><span class="pg">p. 4</span></button>
-              <button type="button" class="toc-item" data-goto="3"><span class="num">03</span><span><span class="t">The Beauty Behind the Story</span><span class="d">Story, animation, characters, music</span></span><span class="pg">p. 7</span></button>
-              <button type="button" class="toc-item" data-goto="4"><span class="num">04</span><span><span class="t">My Favorite Moments</span><span class="d">The first flight — and letting go</span></span><span class="pg">p. 10</span></button>
-              <button type="button" class="toc-item" data-goto="5"><span class="num">05</span><span><span class="t">A Story That Touches the Heart</span><span class="d">Why it stays with you</span></span><span class="pg">p. 13</span></button>
-            </div>
-          </div>
-          <span class="page-num">2</span>
-        </div>
-      </div>
-
-      <!-- LEAF 2 : chapter 1 / chapter 2a -->
-      <div class="leaf">
-        <div class="face front">
-          <div class="page-inner">
             <span class="kicker">✿ Chapter One · Introduction</span>
             <h2>More Than Just <em>a Family</em></h2>
             <p class="dropcap">Sometimes, family is not about sharing the same blood. It is about love, care, and being there for each other.</p>
             <p>This is the main message of <strong>The Wild Robot</strong>, an animated movie released in 2024 by DreamWorks Animation. Through the journey of a robot named Roz, the movie tells us a touching story about motherhood, friendship, and love.</p>
             <blockquote class="pullquote">Family is built through love, not just blood.</blockquote>
           </div>
-          <span class="page-num">3</span>
+          <span class="page-num">2</span>
         </div>
-        <div class="face back">
+      </div>
+
+      <!-- LEAF 2 : chapter 2a / chapter 2b -->
+      <div class="leaf">
+        <div class="face front">
           <div class="page-inner">
             <span class="kicker">✿ Chapter Two · Summary</span>
             <h2>From a Robot <em>to a Mother</em></h2>
@@ -400,22 +385,22 @@
             <p class="dropcap">The story begins when a robot named Roz accidentally arrives on a remote island after a shipwreck.</p>
             <p>At first, she does not know how to live in the wild because she was designed to help humans, not to survive in nature. She tries to communicate with the animals, but they are afraid of her.</p>
           </div>
-          <span class="page-num">4</span>
+          <span class="page-num">3</span>
         </div>
-      </div>
-
-      <!-- LEAF 3 : chapter 2b / chapter 2c -->
-      <div class="leaf">
-        <div class="face front">
+        <div class="face back">
           <div class="page-inner">
             <span class="kicker">✿ Chapter Two · Summary</span>
             <h2>An Egg, a Gosling, <em>a Mother</em></h2>
             <p>One day, Roz finds an abandoned goose egg. When it hatches, a little goose named <strong>Brightbill</strong> is born. Roz decides to take care of him and becomes his mother.</p>
             <p>She teaches Brightbill how to find food, survive in the wild, and finally learn how to fly. During this journey, Roz also makes friends with other animals and slowly learns about love and emotions.</p>
           </div>
-          <span class="page-num">5</span>
+          <span class="page-num">4</span>
         </div>
-        <div class="face back">
+      </div>
+
+      <!-- LEAF 3 : chapter 2c / chapter 3a -->
+      <div class="leaf">
+        <div class="face front">
           <div class="page-inner">
             <span class="kicker">✿ Chapter Two · Summary</span>
             <h2>Lessons of <em>the Wild</em></h2>
@@ -426,13 +411,9 @@
             </div>
             <blockquote class="pullquote">She was only following instructions — until she started following her heart.</blockquote>
           </div>
-          <span class="page-num">6</span>
+          <span class="page-num">5</span>
         </div>
-      </div>
-
-      <!-- LEAF 4 : chapter 3a / chapter 3b -->
-      <div class="leaf">
-        <div class="face front">
+        <div class="face back">
           <div class="page-inner">
             <span class="kicker">✿ Chapter Three · Main aspect</span>
             <h2>The Beauty <em>Behind the Story</em></h2>
@@ -445,9 +426,13 @@
               <p>I think the story is simple but very meaningful. It shows how Roz changes from a robot that only follows instructions into a caring mother who is willing to do anything for her child.</p>
             </article>
           </div>
-          <span class="page-num">7</span>
+          <span class="page-num">6</span>
         </div>
-        <div class="face back">
+      </div>
+
+      <!-- LEAF 4 : chapter 3b / chapter 3c -->
+      <div class="leaf">
+        <div class="face front">
           <div class="page-inner">
             <span class="kicker">✿ Chapter Three · Main aspect</span>
             <h2>Animation <em>&amp; Characters</em></h2>
@@ -460,13 +445,9 @@
               <p>Roz is my favorite character because she is strong, kind, and caring. I also love the relationship between Roz and Brightbill. Their story shows that family is built through love, not just blood.</p>
             </article>
           </div>
-          <span class="page-num">8</span>
+          <span class="page-num">7</span>
         </div>
-      </div>
-
-      <!-- LEAF 5 : chapter 3c / chapter 4a -->
-      <div class="leaf">
-        <div class="face front">
+        <div class="face back">
           <div class="page-inner">
             <span class="kicker">✿ Chapter Three · Main aspect</span>
             <h2>The Music of <em>the Island</em></h2>
@@ -476,9 +457,13 @@
             </article>
             <blockquote class="pullquote">Like a beautiful painting — bright colors, gentle music, and a story with a heart.</blockquote>
           </div>
-          <span class="page-num">9</span>
+          <span class="page-num">8</span>
         </div>
-        <div class="face back">
+      </div>
+
+      <!-- LEAF 5 : chapter 4a / chapter 4b -->
+      <div class="leaf">
+        <div class="face front">
           <div class="page-inner">
             <span class="kicker">✿ Chapter Four · Evaluation</span>
             <h2>My Favorite Moments <em>&amp; Personal Feelings</em></h2>
@@ -488,22 +473,22 @@
             </figure>
             <p class="dropcap">Personally, I really enjoyed this movie because it made me laugh, smile, and even cry.</p>
           </div>
-          <span class="page-num">10</span>
+          <span class="page-num">9</span>
         </div>
-      </div>
-
-      <!-- LEAF 6 : chapter 4b / chapter 4c verdict -->
-      <div class="leaf">
-        <div class="face front">
+        <div class="face back">
           <div class="page-inner">
             <span class="kicker">✿ Chapter Four · Evaluation</span>
             <h2>Learning <em>to Let Go</em></h2>
             <p>My favorite part is when Roz teaches Brightbill how to fly and prepares him for his first long journey with the flock. It is a very emotional moment because Roz knows that she must let him go and become independent.</p>
             <p>From this movie, I learned that being a parent is not only about protecting your children but also about teaching them to be strong and independent.</p>
           </div>
-          <span class="page-num">11</span>
+          <span class="page-num">10</span>
         </div>
-        <div class="face back">
+      </div>
+
+      <!-- LEAF 6 : chapter 4c verdict / chapter 5 -->
+      <div class="leaf">
+        <div class="face front">
           <div class="page-inner">
             <span class="kicker">✿ Chapter Four · Evaluation</span>
             <h2>My <em>Verdict</em></h2>
@@ -514,34 +499,23 @@
               <p><strong>My verdict</strong> — I would give this movie 9 out of 10 because it has a beautiful story, amazing animation, and a very meaningful message.</p>
             </div>
           </div>
-          <span class="page-num">12</span>
+          <span class="page-num">11</span>
         </div>
-      </div>
-
-      <!-- LEAF 7 : chapter 5a / chapter 5b -->
-      <div class="leaf">
-        <div class="face front">
+        <div class="face back">
           <div class="page-inner">
             <span class="kicker">✿ Chapter Five · Conclusion</span>
             <h2>A Story That <em>Touches the Heart</em></h2>
             <p class="dropcap">In conclusion, The Wild Robot is more than just a movie for children. It teaches us about love, friendship, family, and the importance of caring for others.</p>
             <p>I highly recommend this movie to everyone, especially people who love emotional and meaningful stories.</p>
-          </div>
-          <span class="page-num">13</span>
-        </div>
-        <div class="face back">
-          <div class="page-inner">
-            <span class="kicker">✿ Chapter Five · Conclusion</span>
-            <h2>Love From <em>Unexpected Places</em></h2>
             <p>I believe this movie will touch your heart and remind you that love can come from the most unexpected places.</p>
             <blockquote class="pullquote">Love can come from the most unexpected places.</blockquote>
             <div style="text-align:center;font-size:21px;margin-top:18px" aria-hidden="true">🌿 🪶 🌸</div>
           </div>
-          <span class="page-num">14</span>
+          <span class="page-num">12</span>
         </div>
       </div>
 
-      <!-- LEAF 8 : the end / back cover -->
+      <!-- LEAF 7 : the end / back cover -->
       <div class="leaf">
         <div class="face front">
           <div class="page-inner">
@@ -554,7 +528,7 @@
               <p class="end-credit" style="margin-top:18px">Review by Linh Bui<br>The Wild Robot (2024) · DreamWorks Animation<br>Rated 9 / 10 with love</p>
             </div>
           </div>
-          <span class="page-num">15</span>
+          <span class="page-num">13</span>
         </div>
         <div class="face back backcover">
           <div class="backcover-inner">
@@ -565,10 +539,9 @@
             <p>Review by Linh Bui · The Wild Robot (2024)<br>DreamWorks Animation · Rated 9 / 10</p>
             <p style="font-size:12.5px;color:#bdb28c">Film stills from The Wild Robot (2024)<br>© DreamWorks Animation</p>
           </div>
-          <span class="page-num" style="color:#bdb28c">16</span>
+          <span class="page-num" style="color:#bdb28c">14</span>
         </div>
       </div>
-
     </div>
   </div>
 
@@ -576,12 +549,12 @@
     <button type="button" class="ctl-btn" id="btnPrev" aria-label="Previous page">← Prev</button>
     <div class="page-status" aria-live="polite">
       <div class="now" id="pageNow">Cover</div>
-      <div class="of" id="pageOf">page 1 of 16</div>
+      <div class="of" id="pageOf">page 1 of 14</div>
     </div>
     <button type="button" class="ctl-btn" id="btnNext" aria-label="Next page">Next →</button>
   </div>
   <div class="progress-track" aria-hidden="true"><div class="rail"><div class="fill" id="fill"></div></div></div>
-  <p class="read-note">Tip: tap the right side of a page to turn forward, the left side to go back — or swipe sideways, or use the arrow keys. If a page has more to read, scroll down inside the page; the page number always stays visible at the corner.</p>
+  <p class="read-note">Tip: tap the right side of a page to turn forward, the left side to go back — or swipe sideways, or use the arrow keys. Each page shows its whole content at once, so there is no scrolling inside the book.</p>
 </main>
 
 <footer>
@@ -593,7 +566,7 @@
 <script>
 (function(){
   var leaves = Array.prototype.slice.call(document.querySelectorAll('.leaf'));
-  var TOTAL = leaves.length;           // 8 leaves = 16 pages
+  var TOTAL = leaves.length;           // 7 leaves = 14 pages
   var flipped = 0;                     // leaves currently flipped
   var btnPrev = document.getElementById('btnPrev');
   var btnNext = document.getElementById('btnNext');
@@ -616,20 +589,19 @@
   });
 
   var labels = [
-    {now:'Cover',            of:'page 1 of 16'},
-    {now:'Pages 2 – 3',      of:'Contents · Introduction'},
+    {now:'Cover',            of:'page 1 of 14'},
+    {now:'Pages 2 – 3',      of:'Introduction · Summary'},
     {now:'Pages 4 – 5',      of:'Summary'},
-    {now:'Pages 6 – 7',      of:'Summary · Main aspect'},
-    {now:'Pages 8 – 9',      of:'Main aspect'},
+    {now:'Pages 6 – 7',      of:'Main aspect'},
+    {now:'Pages 8 – 9',      of:'Main aspect · Evaluation'},
     {now:'Pages 10 – 11',    of:'Evaluation'},
-    {now:'Pages 12 – 13',    of:'Evaluation · Conclusion'},
-    {now:'Pages 14 – 15',    of:'Conclusion · The End'},
-    {now:'Back cover',       of:'page 16 of 16'}
+    {now:'Pages 12 – 13',    of:'Conclusion · The End'},
+    {now:'Back cover',       of:'page 14 of 14'}
   ];
   // which chapter each desktop spread belongs to (by leaves flipped)
-  var flippedChapter = [0, 1, 2, 3, 3, 4, 5, 5, 5];
-  // leaves to flip so each chapter's first page is on show (desktop)
-  var deskChapterLeaf = [1, 2, 3, 5, 6];
+  var flippedChapter = [0, 2, 2, 3, 4, 4, 5, 5];
+  // leaves to flip so each chapter's opening spread is on show (desktop)
+  var deskChapterLeaf = [1, 1, 3, 4, 6];
 
   /* ---------- single-page mode (phones): one page at a time ---------- */
   var faces = [];
@@ -639,24 +611,22 @@
   });
   var PAGES = faces.length;
   var singleLabels = [
-    {now:'Cover',       of:'page 1 of 16'},
-    {now:'Contents',    of:'page 2 of 16'},
-    {now:'Introduction',of:'page 3 of 16'},
-    {now:'Summary',     of:'page 4 of 16'},
-    {now:'Summary',     of:'page 5 of 16'},
-    {now:'Summary',     of:'page 6 of 16'},
-    {now:'Main aspect', of:'page 7 of 16'},
-    {now:'Main aspect', of:'page 8 of 16'},
-    {now:'Main aspect', of:'page 9 of 16'},
-    {now:'Evaluation',  of:'page 10 of 16'},
-    {now:'Evaluation',  of:'page 11 of 16'},
-    {now:'Evaluation',  of:'page 12 of 16'},
-    {now:'Conclusion',  of:'page 13 of 16'},
-    {now:'Conclusion',  of:'page 14 of 16'},
-    {now:'The End',     of:'page 15 of 16'},
-    {now:'Back cover',  of:'page 16 of 16'}
+    {now:'Cover',       of:'page 1 of 14'},
+    {now:'Introduction',of:'page 2 of 14'},
+    {now:'Summary',     of:'page 3 of 14'},
+    {now:'Summary',     of:'page 4 of 14'},
+    {now:'Summary',     of:'page 5 of 14'},
+    {now:'Main aspect', of:'page 6 of 14'},
+    {now:'Main aspect', of:'page 7 of 14'},
+    {now:'Main aspect', of:'page 8 of 14'},
+    {now:'Evaluation',  of:'page 9 of 14'},
+    {now:'Evaluation',  of:'page 10 of 14'},
+    {now:'Evaluation',  of:'page 11 of 14'},
+    {now:'Conclusion',  of:'page 12 of 14'},
+    {now:'The End',     of:'page 13 of 14'},
+    {now:'Back cover',  of:'page 14 of 14'}
   ];
-  var chapterStarts = [2, 3, 6, 9, 12];   // first page (0-based) of each chapter
+  var chapterStarts = [1, 2, 5, 8, 11];   // first page (0-based) of each chapter
   var pageIdx = 0;
   var turning = false;
   var mq = window.matchMedia('(max-width: 720px)');
@@ -864,40 +834,56 @@
     if(startX === null) return;
     var dx = e.changedTouches[0].clientX - startX;
     var dy = e.changedTouches[0].clientY - startY;
-    // horizontal swipes only: vertical swipes scroll inside the page instead
+    // horizontal swipes only: vertical swipes scroll the page layout as usual
     if(Math.abs(dx) > 48 && Math.abs(dx) > Math.abs(dy) * 1.4) { dx < 0 ? next() : prev(); }
     startX = startY = null;
   }, {passive:true});
 
-  // ---- pages scroll internally: content is never scaled or clipped ----
-  // (an earlier shrink-to-fit pass scaled tall pages down and let the scaled
-  //  content slide under the page number — removed; the .page-inner /
-  //  .cover-inner / .backcover-inner areas now scroll vertically instead)
+  // ---- no scrolling inside the book ----
+  // Pages never scroll internally: the book's height is set to the tallest
+  // page's natural content height, so every page shows all of its content
+  // at once. If the book ends up taller than the screen, the reader scrolls
+  // the page layout itself, like any normal web page.
   var fitBoxes = Array.prototype.slice.call(document.querySelectorAll('.page-inner, .cover-inner, .backcover-inner'));
-  function fitBox(box){
-    box.style.transform = 'none';
+  function fitBookHeight(){
+    var prevHeight = bookEl.style.height;
+    bookEl.style.height = '4000px';   // give every face room to show its natural height
+    var maxH = 0;
+    fitBoxes.forEach(function(box){
+      var face = box.parentElement;
+      var prevDisplay = face.style.display;
+      var prevFlex = box.style.flex;
+      var prevBoxH = box.style.height;
+      face.style.display = 'flex';    // hidden faces must be measurable too
+      box.style.flex = '0 0 auto';
+      box.style.height = 'auto';
+      if(box.offsetHeight > maxH) maxH = box.offsetHeight;
+      box.style.flex = prevFlex;
+      box.style.height = prevBoxH;
+      face.style.display = prevDisplay;
+    });
+    bookEl.style.height = maxH > 0 ? (maxH + 2) + 'px' : prevHeight;
   }
-  function fitAll(){ fitBoxes.forEach(fitBox); }
-  window.addEventListener('load', fitAll);
-  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(fitAll); }
+  window.addEventListener('load', fitBookHeight);
+  if(document.fonts && document.fonts.ready){ document.fonts.ready.then(fitBookHeight); }
   var fitTimer = null;
   window.addEventListener('resize', function(){
     if(fitTimer) clearTimeout(fitTimer);
     fitTimer = setTimeout(function(){
-      fitAll();
+      fitBookHeight();
       var s = singleMode();
       if(s !== wasSingle){
         // crossed the phone/desktop breakpoint: keep the reader on the same content
         if(s){ pageIdx = flipped === 0 ? 0 : Math.min(PAGES - 1, flipped * 2 - 1); renderSingle(); }
         else { flipped = Math.ceil(pageIdx / 2); render(); }
         wasSingle = s;
-        fitAll();
+        fitBookHeight();
       }
     }, 120);
   });
-  fitAll();
 
   if(wasSingle) renderSingle(); else render();
+  fitBookHeight();
 })();
 </script>
 </body>
